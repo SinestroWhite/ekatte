@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegionsTable extends Migration
+class CreateTownsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateRegionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('regions', function (Blueprint $table) {
+        Schema::create('towns', function (Blueprint $table) {
             $table->string('id', 5)->primary();
             $table->string('name');
-            $table->integer('document_id');
-            $table->foreign('document_id')->references('id')->on('documents');
+            $table->string('type', 4); // Town or Village
+            $table->string('municipality_id', 5);
+            $table->foreign('municipality_id')->references('id')->on('municipalities');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateRegionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regions');
+        Schema::dropIfExists('ekattes');
     }
 }

@@ -16,10 +16,6 @@ class CreateProvincesTable extends Migration
         Schema::create('provinces', function (Blueprint $table) {
             $table->string('id', 3)->primary();
             $table->string('name');
-            $table->string('region_id', 5);
-            $table->foreign('region_id')->references('id')->on('regions');
-            $table->integer('document_id');
-            $table->foreign('document_id')->references('id')->on('documents');
         });
     }
 

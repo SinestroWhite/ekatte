@@ -16,10 +16,8 @@ class CreateMunicipalitiesTable extends Migration
         Schema::create('municipalities', function (Blueprint $table) {
             $table->string('id', 5)->primary();
             $table->string('name');
-            $table->bigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->integer('document_id');
-            $table->foreign('document_id')->references('id')->on('documents');
+            $table->string('province_id', 3)->nullable();
+            $table->foreign('province_id')->references('id')->on('provinces');
         });
     }
 
