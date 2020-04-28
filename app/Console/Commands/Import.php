@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\ParseController;
 use App\Imports\MunicipalitiesImport;
+use App\Imports\MunicipalitiesUpdateImport;
 use App\Imports\ProvincesImport;
 use App\Imports\TownsImport;
 use Illuminate\Console\Command;
@@ -40,16 +42,23 @@ class Import extends Command
      */
     public function handle()
     {
+
         $this->output->title('Importing Provinces');
         (new ProvincesImport)->withOutput($this->output)->import('Ek_obl.xlsx');
-        $this->output->title('Provinces have been Successfully imported!');
+        $this->output->success('Provinces have been Successfully imported!');
 
         $this->output->title('Importing Municipalities');
         (new MunicipalitiesImport)->withOutput($this->output)->import('Ek_obst.xlsx');
-        $this->output->title('Municipalities have been Successfully imported!');
+        $this->output->success('Municipalities have been Successfully imported!');
 
         $this->output->title('Importing Towns');
         (new TownsImport)->withOutput($this->output)->import('Ek_atte.xlsx');
-        $this->output->title('Towns have been Successfully imported!');
+        $this->output->success('Towns have been Successfully imported!');
+
+//        $controller = new ParseController();
+//        $controller->update();
+//        $this->output->title('Updating Munici');
+//        (new MunicipalitiesUpdateImport)->withOutput($this->output)->import('Ek_atte.xlsx');
+//        $this->output->success('Towns have been Successfully imported!');
     }
 }

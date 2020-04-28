@@ -19,6 +19,8 @@ class Municipality extends Model
      *  Turning timestamps off
      */
     public $timestamps = false;
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     /**
      * Get province of the municipality.

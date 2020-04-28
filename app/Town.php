@@ -19,6 +19,7 @@ class Town extends Model
      *  Turning timestamps off
      */
     public $timestamps = false;
+    public $incrementing = false;
 
     /**
      * Get municipality of the town.
@@ -32,8 +33,7 @@ class Town extends Model
     {
         if ($keyword != '') {
             $query->where(function ($query) use ($keyword) {
-                $query->where("name", "LIKE", "%$keyword%")
-                    ->orWhere("type", "LIKE", "%$keyword%")
+                $query->where("name", "ILIKE", "%$keyword%")
                     ->get();
             });
         }

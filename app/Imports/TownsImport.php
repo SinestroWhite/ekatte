@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Municipality;
 use App\Town;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -20,6 +21,7 @@ class TownsImport implements ToModel, WithHeadingRow, WithProgressBar
     public function model(array $row)
     {
         if(!Town::where('id', $row['ekatte'])->exists() && $row['ekatte'] != "00000") {
+            Municipality::find($row['obstina'])->update(['province_id' => $row['oblast']]);
             return new Town([
                 'id'                => $row['ekatte'],
                 'name'              => $row['name'],

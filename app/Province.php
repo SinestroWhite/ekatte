@@ -20,5 +20,7 @@ class Province extends Model
      *  Turning timestamps off
      */
     public $timestamps = false;
+    protected $keyType = 'string';
+    public $incrementing = false;
 
 }

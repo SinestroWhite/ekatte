@@ -4,97 +4,82 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Търсене в единния класификатор</title>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-        <!-- Styles -->
         <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
+            .block {
                 display: flex;
-                justify-content: center;
             }
 
-            .position-ref {
-                position: relative;
+            .search {
+                margin-right: 10px;
             }
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
+            .search-list {
+                margin-top: 50px;
             }
 
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
+            .container {
+                margin-top: 50px;
             }
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+        <div class="columns is-centered">
+            <div class="column is-three-fifths">
+                <div class="search-list">
+                    <form action="/search" method="POST" role="search" name="searchForm">
+                        {{ csrf_field() }}
+                        <h1 class="title">Търсене в единния класификатор</h1>
+                        <div class="block">
+                            <input class="input search" type="text" name="query" placeholder="Въведете име на селище" value="{{ $keyword ?? '' }}">
+                            <button class="button is-primary" id="button" type="submit">Търсене</button>
+                        </div>
+                    </form>
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="container">
+                    @if(isset($results))
+                        <table class="table is-striped is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Име</th>
+                                    <th>Тип на селището</th>
+                                    <th>Община</th>
+                                    <th>Област</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($results as $result)
+                                    <tr>
+                                        <td>{{ $result->name }}</td>
+                                        <td>{{ $result->type }}</td>
+                                        <td>{{ $result->municipality->name }}</td>
+                                        <td>{{ $result->municipality->province->name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{ $results->appends(request()->except('_token'))->links() }}
+                    @endif
+
+                    @if(isset($error))
+                        <p class="is-size-6 has-text-centered">
+                            {{ $error }}
+                        </p>
+                    @endif
                 </div>
             </div>
         </div>
+
+        <script>
+            document.getElementById('button').onkeydown = function(e){
+                if(e.keyCode == 13){
+                    document.searchForm.submit();
+                }
+            }
+        </script>
     </body>
 </html>

@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/import', 'ParseController@import');
-
-//Route::get('/', function () {
-//    return redirect()->action('ParseController@index');
-//});
-
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/search', 'SearchController@search');
+Route::post('/search', 'SearchController@search');
